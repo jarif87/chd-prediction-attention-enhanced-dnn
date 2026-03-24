@@ -50,6 +50,7 @@ pip install -r requirements.txt
 ### 3. Download the Dataset
 
 Download the Framingham Heart Study dataset from:
+
 - https://github.com/GauravPadawe/Framingham-Heart-Study
 
 Place the CSV file in the `data/` directory.
@@ -98,6 +99,7 @@ pip install numpy pandas scikit-learn xgboost lightgbm torch matplotlib seaborn 
 ```
 
 **Hardware used during experiments:**
+
 - Baseline and advanced models: NVIDIA P100 GPU (Kaggle)
 - Attention-Enhanced DNN: NVIDIA T4 GPU (Google Colaboratory)
 
@@ -106,6 +108,7 @@ pip install numpy pandas scikit-learn xgboost lightgbm torch matplotlib seaborn 
 ## Methodology
 
 ### 1. Data Preprocessing
+
 - **Missing value imputation:** Continuous variables (Cigarettes Per Day, Total Cholesterol, BMI, Heart Rate, Glucose) imputed with median; categorical variables (Education, BP Medication) imputed with mode.
 - **Feature engineering:** Pulse Pressure = Systolic BP − Diastolic BP (added as 17th feature).
 - **Class imbalance handling:** Random upsampling with replacement applied to the minority class (random seed = 42), producing 7,188 balanced samples.
@@ -113,16 +116,18 @@ pip install numpy pandas scikit-learn xgboost lightgbm torch matplotlib seaborn 
 - **Normalization:** StandardScaler fitted on training set only; applied to validation and test sets to prevent data leakage.
 
 ### 2. Models Evaluated
-| Model | Type |
-|---|---|
-| K-Nearest Neighbors (KNN) | Baseline (k=5, Euclidean distance) |
-| Decision Tree (DT) | Baseline (CART, Gini impurity) |
-| Random Forest (RF) | Baseline (200 estimators) |
-| XGBoost | Advanced (500 estimators, lr=0.05, max depth=6) |
-| LightGBM | Advanced (500 estimators, lr=0.05, 31 leaves) |
-| Attention-Enhanced DNN | Proposed novel model |
+
+| Model                     | Type                                            |
+| ------------------------- | ----------------------------------------------- |
+| K-Nearest Neighbors (KNN) | Baseline (k=5, Euclidean distance)              |
+| Decision Tree (DT)        | Baseline (CART, Gini impurity)                  |
+| Random Forest (RF)        | Baseline (200 estimators)                       |
+| XGBoost                   | Advanced (500 estimators, lr=0.05, max depth=6) |
+| LightGBM                  | Advanced (500 estimators, lr=0.05, 31 leaves)   |
+| Attention-Enhanced DNN    | Proposed novel model                            |
 
 ### 3. Attention-Enhanced DNN Architecture
+
 - **TabAttention module:** Linear transformation + Softmax → element-wise feature weighting
 - **Block 1:** Linear(17→128) + BatchNorm1d + GELU + Dropout(0.25) + skip connection
 - **Block 2:** Linear(128→128) + BatchNorm1d + GELU + Dropout(0.25)
@@ -135,6 +140,7 @@ pip install numpy pandas scikit-learn xgboost lightgbm torch matplotlib seaborn 
 - **Training:** Max 400 epochs, early stopping (patience=40), best checkpoint saved on minimum validation loss
 
 ### 4. Evaluation
+
 All models evaluated using: **Accuracy, Precision, Recall, F1-Score, ROC-AUC**  
 Baseline and advanced models: Stratified 10-fold cross-validation + held-out test set  
 Attention-Enhanced DNN: Fixed held-out test set with best model checkpoint  
@@ -144,14 +150,14 @@ Global random seed: **42** (set across Python, NumPy, PyTorch for reproducibilit
 
 ## Results Summary
 
-| Model | Accuracy | Precision | Recall | F1-Score | ROC-AUC |
-|---|---|---|---|---|---|
-| KNN | 79.64% | 73.93% | 91.52% | 81.79% | 87.29% |
-| Decision Tree | 89.16% | 83.47% | 97.64% | 90.00% | 89.17% |
-| Random Forest | **96.25%** | 94.99% | 97.64% | 96.30% | **99.13%** |
-| XGBoost | 85.48% | — | — | — | 90.75% |
-| LightGBM | 89.85% | — | — | — | 95.45% |
-| Attention-Enhanced DNN | 90.00% | 86.55% | 94.72% | 90.45% | 94.94% |
+| Model                  | Accuracy   | Precision | Recall | F1-Score | ROC-AUC    |
+| ---------------------- | ---------- | --------- | ------ | -------- | ---------- |
+| KNN                    | 79.64%     | 73.93%    | 91.52% | 81.79%   | 87.29%     |
+| Decision Tree          | 89.16%     | 83.47%    | 97.64% | 90.00%   | 89.17%     |
+| Random Forest          | **96.25%** | 94.99%    | 97.64% | 96.30%   | **99.13%** |
+| XGBoost                | 85.48%     | 82.69%    | 89.71% | 86.06%   | 90.75%     |
+| LightGBM               | 89.85%     | 86.68%    | 94.16% | 90.27%   | 95.45%     |
+| Attention-Enhanced DNN | 90.00%     | 86.55%    | 94.72% | 90.45%   | 94.94%     |
 
 ---
 
@@ -160,15 +166,18 @@ Global random seed: **42** (set across Python, NumPy, PyTorch for reproducibilit
 If you use this code or dataset in your research, please cite:
 
 **This paper:**
-> Sadik Al Jarif. A Comparative Study of Machine Learning Models for Coronary Heart Disease Prediction with an Attention-Based Deep Learning Approach. *PeerJ Computer Science* (under review).
+
+> Sadik Al Jarif. A Comparative Study of Machine Learning Models for Coronary Heart Disease Prediction with an Attention-Based Deep Learning Approach. _PeerJ Computer Science_ (under review).
 
 **Dataset:**
-> Dawber TR, Meadors GF, and Moore FE. 1951. Epidemiological approaches to heart disease: the Framingham Heart Study. *American Journal of Public Health* 41(3):279–281. DOI: 10.2105/AJPH.41.3.279
+
+> Dawber TR, Meadors GF, and Moore FE. 1951. Epidemiological approaches to heart disease: the Framingham Heart Study. _American Journal of Public Health_ 41(3):279–281. DOI: 10.2105/AJPH.41.3.279
 
 > National Heart, Lung, and Blood Institute (NHLBI). Framingham Heart Study Teaching Dataset. BioLINCC. https://biolincc.nhlbi.nih.gov/teaching/
 
 **Baseline reference:**
-> Bakhtawar HK, et al. 2024. Heart disease prediction using machine learning. In: *Proceedings of the 2nd DMIHER International Conference on Artificial Intelligence in Healthcare, Education and Industry (IDICAIEI)*. IEEE. DOI: 10.1109/IDICAIEI61867.2024.10842908
+
+> Bakhtawar HK, et al. 2024. Heart disease prediction using machine learning. In: _Proceedings of the 2nd DMIHER International Conference on Artificial Intelligence in Healthcare, Education and Industry (IDICAIEI)_. IEEE. DOI: 10.1109/IDICAIEI61867.2024.10842908
 
 ---
 
